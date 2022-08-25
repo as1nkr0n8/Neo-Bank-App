@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Neo. Bank</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="detailed_info">Providing PAN and Date of Birth helps us find and fetch your KYC
+        from a central registry by the Government of India.</string>
+    <string name="no_pan">I don\'t have a PAN</string>
+    <string name="day">Day</string>
+    <string name="year">Year</string>
+    <string name="month">Month</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="pan_text">Permanent Account Number (PAN)</string>
+    <string name="pan">PAN</string>
+    <string name="title">First of the few steps to set you up with a Bank Account</string>
+    <string name="top_text">Neo.</string>
+
+
+    <string name="pan_empty_error">PAN field is empty!</string>
+    <string name="field_invalid_error">Input invalid!</string>
+    <string name="dob_empty_error">One or more birth date fields are empty!</string>
+    <string name="dob_invalid_error">Birth date is in future or invalid!</string>
+    <string name="details_submitted_text">Details submitted successfully</string>
+    <string name="field_empty_error">Empty!</string>
+</resources>
