@@ -77,7 +77,8 @@
                 android:inputType="textCapCharacters"
                 android:maxLength="10"
                 android:nextFocusForward="@id/day_edit_text"
-                android:text="@={viewModel.panInputText}" />
+                android:text="@={viewModel.panInputText}"
+                android:afterTextChanged="@{()->viewModel.isPANValid()}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -125,7 +126,8 @@
                     android:inputType="number"
                     android:maxLength="2"
                     android:nextFocusForward="@id/month_edit_text"
-                    android:text="@={viewModel.dayInputText}" />
+                    android:text="@={viewModel.dayInputText}"
+                    android:afterTextChanged="@{()->viewModel.isDayValid()}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -145,7 +147,8 @@
                     android:inputType="number"
                     android:maxLength="2"
                     android:nextFocusForward="@id/year_edit_text"
-                    android:text="@={viewModel.monthInputText}" />
+                    android:text="@={viewModel.monthInputText}"
+                    android:afterTextChanged="@{()->viewModel.isMonthValid()}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -165,7 +168,8 @@
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="4"
-                    android:text="@={viewModel.yearInputText}" />
+                    android:text="@={viewModel.yearInputText}"
+                    android:afterTextChanged="@{()->viewModel.isYearValid()}"/>
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 

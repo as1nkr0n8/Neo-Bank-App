@@ -1,7 +1,5 @@
 package com.as1nkr0n8.pii_verification.ui.pii_input
 
-import android.util.Log
-import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,41 +22,98 @@ class PIIInputViewModel : ViewModel() {
     val nextClicked = MutableLiveData(false)
     val noPANClicked = MutableLiveData(false)
 
-    private val panTextChangedCallback = object : Observable.OnPropertyChangedCallback() {
-        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-            Log.d("TAG", "panInput")
-            isPANValid()
-            updateNextState()
+    fun isPANValid(): Boolean {
+        val panText = panInputText.get()
+        val isValid = when {
+            panText.isNullOrBlank() -> {
+                panEvent.value = PANInputEvent.EMPTY
+                false
+            }
+            PAN(panText).isValid().not() -> {
+                panEvent.value = PANInputEvent.INVALID_INPUT
+                false
+            }
+            else -> {
+                panEvent.value = PANInputEvent.SUCCESS
+                true
+            }
         }
-    }
-    private val dobTextChangedCallback = object : Observable.OnPropertyChangedCallback() {
-        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-            isBirthDateValid()
-            updateNextState()
-        }
+        updateNextState()
+        return isValid
     }
 
-    init {
-        panInputText.addOnPropertyChangedCallback(panTextChangedCallback)
-        dayInputText.addOnPropertyChangedCallback(dobTextChangedCallback)
-        monthInputText.addOnPropertyChangedCallback(dobTextChangedCallback)
-        yearInputText.addOnPropertyChangedCallback(dobTextChangedCallback)
+    fun isDayValid(): Boolean {
+        val dayText = dayInputText.get()
+        val isValid = when {
+            dayText.isNullOrBlank() -> {
+                dayEvent.value = DOBInputEvent.EMPTY
+                false
+            }
+            BirthDate.isDayValid(dayText.toInt()).not() -> {
+                dayEvent.value = DOBInputEvent.INVALID_INPUT
+                false
+            }
+            else -> {
+                dayEvent.value = DOBInputEvent.SUCCESS
+                true
+            }
+        }
+        isBirthDateValid()
+        updateNextState()
+        return isValid
+    }
+
+    fun isMonthValid(): Boolean {
+        val monthText = monthInputText.get()
+        val isValid = when {
+            monthText.isNullOrBlank() -> {
+                monthEvent.value = DOBInputEvent.EMPTY
+                false
+            }
+            BirthDate.isMonthValid(monthText.toInt()).not() -> {
+                monthEvent.value = DOBInputEvent.INVALID_INPUT
+                false
+            }
+            else -> {
+                monthEvent.value = DOBInputEvent.SUCCESS
+                true
+            }
+        }
+        isBirthDateValid()
+        updateNextState()
+        return isValid
+    }
+
+    fun isYearValid(): Boolean {
+        val yearText = yearInputText.get()
+        val isValid = when {
+            yearText.isNullOrBlank() -> {
+                yearEvent.value = DOBInputEvent.EMPTY
+                false
+            }
+            BirthDate.isYearValid(yearText.toInt()).not() -> {
+                yearEvent.value = DOBInputEvent.INVALID_INPUT
+                false
+            }
+            else -> {
+                yearEvent.value = DOBInputEvent.SUCCESS
+                true
+            }
+        }
+        isBirthDateValid()
+        updateNextState()
+        return isValid
     }
 
     private fun isBirthDateValid(): Boolean {
         return when {
             dayInputText.get().isNullOrBlank() -> {
-                dayEvent.postValue(DOBInputEvent.EMPTY)
                 false
             }
             monthInputText.get().isNullOrBlank() -> {
-                dayEvent.postValue(DOBInputEvent.NONE)
-                monthEvent.postValue(DOBInputEvent.EMPTY)
                 false
             }
             yearInputText.get().isNullOrBlank() -> {
-                monthEvent.postValue(DOBInputEvent.NONE)
-                yearEvent.postValue(DOBInputEvent.EMPTY)
                 false
             }
             BirthDate(
@@ -67,58 +122,33 @@ class PIIInputViewModel : ViewModel() {
                 yearInputText.get()!!.toInt()
             ).isValid()
                 .not() -> {
-                dayEvent.postValue(DOBInputEvent.INVALID_INPUT)
-                monthEvent.postValue(DOBInputEvent.INVALID_INPUT)
-                yearEvent.postValue(DOBInputEvent.INVALID_INPUT)
+                dayEvent.value = DOBInputEvent.INVALID_INPUT
+                monthEvent.value = DOBInputEvent.INVALID_INPUT
+                yearEvent.value = DOBInputEvent.INVALID_INPUT
                 false
             }
             else -> {
-                dayEvent.postValue(DOBInputEvent.SUCCESS)
-                monthEvent.postValue(DOBInputEvent.SUCCESS)
-                yearEvent.postValue(DOBInputEvent.SUCCESS)
+                dayEvent.value = DOBInputEvent.SUCCESS
+                monthEvent.value = DOBInputEvent.SUCCESS
+                yearEvent.value = DOBInputEvent.SUCCESS
                 true
             }
         }
     }
 
-    private fun isPANValid(): Boolean {
-        return when {
-            panInputText.get().isNullOrBlank() -> {
-                panEvent.postValue(PANInputEvent.EMPTY)
-                false
-            }
-            PAN(panInputText.get()!!).isValid().not() -> {
-                panEvent.postValue(PANInputEvent.INVALID_INPUT)
-                false
-            }
-            else -> {
-                panEvent.postValue(PANInputEvent.SUCCESS)
-                true
-            }
-        }
-    }
-
-    fun updateNextState() {
-        val bothValid = panEvent.value == PANInputEvent.SUCCESS
+    private fun updateNextState() {
+        val allValid = panEvent.value == PANInputEvent.SUCCESS
                 && dayEvent.value == DOBInputEvent.SUCCESS
                 && monthEvent.value == DOBInputEvent.SUCCESS
                 && yearEvent.value == DOBInputEvent.SUCCESS
-        isNextEnabled.postValue(bothValid)
+        isNextEnabled.value = allValid
     }
 
     fun onNextClicked() {
-        nextClicked.postValue(true)
+        nextClicked.value = true
     }
 
     fun onNoPANClicked() {
-        noPANClicked.postValue(true)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        panInputText.removeOnPropertyChangedCallback(panTextChangedCallback)
-        dayInputText.removeOnPropertyChangedCallback(dobTextChangedCallback)
-        monthInputText.removeOnPropertyChangedCallback(dobTextChangedCallback)
-        yearInputText.removeOnPropertyChangedCallback(dobTextChangedCallback)
+        noPANClicked.value = true
     }
 }
