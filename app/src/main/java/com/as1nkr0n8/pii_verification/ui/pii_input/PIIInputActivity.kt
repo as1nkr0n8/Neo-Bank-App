@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.as1nkr0n8.pii_verification.R
 import com.as1nkr0n8.pii_verification.databinding.ActivityPiiinputBinding
-import com.commonsware.cwac.security.flagsecure.FlagSecureHelper
 
 
 class PIIInputActivity : AppCompatActivity() {
@@ -78,7 +77,7 @@ class PIIInputActivity : AppCompatActivity() {
         //Next clicks
         viewModel.nextClicked.observe(this) { clicked ->
             if (clicked) {
-                FlagSecureHelper.makeSecureToast(
+                Toast.makeText(
                     this,
                     R.string.details_submitted_text,
                     Toast.LENGTH_LONG
