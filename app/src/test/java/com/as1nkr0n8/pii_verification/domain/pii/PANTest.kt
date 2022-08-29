@@ -6,7 +6,7 @@ class PANTest {
 
     @Test
     fun `isValid success`() {
-        val panString = "ABCDE12345F"
+        val panString = "ABCDE1234F"
         assert(PAN(panString).isValid())
     }
 
