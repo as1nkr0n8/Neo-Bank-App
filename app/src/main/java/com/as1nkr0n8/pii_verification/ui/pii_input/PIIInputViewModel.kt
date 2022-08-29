@@ -107,13 +107,13 @@ class PIIInputViewModel : ViewModel() {
 
     private fun isBirthDateValid(): Boolean {
         return when {
-            dayInputText.get().isNullOrBlank() -> {
+            dayInputText.get().isNullOrBlank() || dayEvent.value?.isError() == true -> {
                 false
             }
-            monthInputText.get().isNullOrBlank() -> {
+            monthInputText.get().isNullOrBlank() || monthEvent.value?.isError() == true -> {
                 false
             }
-            yearInputText.get().isNullOrBlank() -> {
+            yearInputText.get().isNullOrBlank() || yearEvent.value?.isError() == true-> {
                 false
             }
             BirthDate(

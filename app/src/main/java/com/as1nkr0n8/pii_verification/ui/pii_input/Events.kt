@@ -4,12 +4,16 @@ import androidx.annotation.StringRes
 import com.as1nkr0n8.pii_verification.R
 
 enum class PANInputEvent(@StringRes val resId: Int) {
-    NONE(0), SUCCESS(0), EMPTY(R.string.field_empty_error), INVALID_INPUT(R.string.field_invalid_error)
+    NONE(0), SUCCESS(0), EMPTY(R.string.field_empty_error), INVALID_INPUT(R.string.field_invalid_error);
+
+    fun isError(): Boolean = this == EMPTY || this == INVALID_INPUT
 }
 
 enum class DOBInputEvent(@StringRes val resId: Int) {
     NONE(0),
     SUCCESS(0),
     EMPTY(R.string.field_empty_error),
-    INVALID_INPUT(R.string.field_invalid_error)
+    INVALID_INPUT(R.string.field_invalid_error);
+
+    fun isError(): Boolean = this == EMPTY || this == INVALID_INPUT
 }
