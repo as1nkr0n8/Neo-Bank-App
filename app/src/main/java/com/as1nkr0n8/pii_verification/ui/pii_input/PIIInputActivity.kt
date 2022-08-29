@@ -2,9 +2,9 @@ package com.as1nkr0n8.pii_verification.ui.pii_input
 
 import android.os.Bundle
 import android.text.InputFilter
-import android.text.InputFilter.AllCaps
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.as1nkr0n8.pii_verification.R
@@ -12,7 +12,7 @@ import com.as1nkr0n8.pii_verification.databinding.ActivityPiiinputBinding
 
 
 class PIIInputActivity : AppCompatActivity() {
-    private lateinit var viewModel: PIIInputViewModel
+    private val viewModel: PIIInputViewModel by viewModels()
     private lateinit var binding: ActivityPiiinputBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,14 +22,13 @@ class PIIInputActivity : AppCompatActivity() {
         )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_piiinput)
         binding.lifecycleOwner = this
-        viewModel = PIIInputViewModel()
         binding.viewModel = viewModel
         binding.executePendingBindings()
     }
 
     override fun onStart() {
         super.onStart()
-        binding.panEditText.filters = arrayOf<InputFilter>(AllCaps())
+        binding.panEditText.filters = arrayOf(InputFilter.AllCaps(), InputFilter.LengthFilter(10))
         //PAN Input Events
         viewModel.panEvent.observe(this) { event ->
             when (event) {
@@ -38,6 +37,10 @@ class PIIInputActivity : AppCompatActivity() {
                 }
                 else -> {
                     binding.panTextField.error = null
+                    if(event == PANInputEvent.SUCCESS) {
+                        binding.panTextField.clearFocus()
+                        binding.dayTextField.requestFocus()
+                    }
                 }
             }
         }

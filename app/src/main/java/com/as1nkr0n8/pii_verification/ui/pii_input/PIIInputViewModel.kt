@@ -113,7 +113,7 @@ class PIIInputViewModel : ViewModel() {
             monthInputText.get().isNullOrBlank() || monthEvent.value?.isError() == true -> {
                 false
             }
-            yearInputText.get().isNullOrBlank() || yearEvent.value?.isError() == true-> {
+            yearInputText.get().isNullOrBlank() || yearEvent.value?.isError() == true -> {
                 false
             }
             BirthDate(
